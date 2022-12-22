@@ -67,7 +67,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Configuracion Proyecto
 
-Se require establecer las siguientes variables en el archivo .env con los siguientes datos 
+Se require establecer las siguientes variables en el archivo .env con los siguientes datos:
 
 BASE_URL= https://test.conectadosweb.com.co/users
+
 TOKEN_API= token_api suministrado.
