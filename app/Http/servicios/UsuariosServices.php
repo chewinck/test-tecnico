@@ -3,6 +3,7 @@
 namespace App\Http\servicios;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Collection;
 
 class UsuariosServices{
 
@@ -48,16 +49,20 @@ class UsuariosServices{
   public function getUsuarioForId($id){
         
     try{
-        $url = $this->baseUrl.'/'.$this->tokenApi.'/'.'transaction/'.$id;
+        
         $url = $this->baseUrl.'/'.$this->tokenApi;
         $response = Http::get($url);
-        $response = $response->json();
+        $response = json_decode($response, true);
+
+        $usuarios = new Collection($response);
+        $result = $usuarios->keyBy('user_id');
+        $usuario = $result->get($id);
     
     }catch(\Exception $e){
         throw $e;
 
     }
-    return $response;
+    return $usuario;
   }
 
 }

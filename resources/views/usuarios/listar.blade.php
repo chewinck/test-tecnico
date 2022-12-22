@@ -13,11 +13,15 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <table class="table table_striped table-dark mt-5">
+                <table class="table table_striped table-ligth mt-5">
                     <thead>
                         <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
+                        <th>Program Id</th>
+                        <th>Fecha nacimiento</th>
+                        <th>Telefono</th>
+                        <th>Status</th>
+                        <th>Creación</th>
+                        <th>Accion</th>
                     </thead>
                     <tbody>
                          
@@ -26,9 +30,14 @@
 
                       <!--   {{dump($usuario['id'])}} -->
 
-                            <td>{{$usuario['id']}}</td>
+                            <td>{{$usuario['user_id']}}</td>
+                            <td>{{$usuario['program_id']}}</td>
+                            <td>{{$usuario['birth_date']}}</td>
                             <td>{{$usuario['mobile_number']}}</td>
                             <td>{{$usuario['active']}}</td>
+                            <td>{{ $usuario['created_at']}}</td>
+                            <td><a href="{{  url('transacciones', [$usuario['user_id']])}}  " class="btn btn-info" data-method="get" data-confirm="Are you sure?">Transactions</a></td>
+                            <!-- <td> <button  formaction="transacciones/{$usuario['user_id']}" type="button" class="btn btn-info">Transacctions</button></td> -->
                         </tr>
                         @endforeach
 

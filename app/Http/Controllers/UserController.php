@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller{
     
@@ -32,44 +33,36 @@ class UserController extends Controller{
 
 
     // método que consume API de transacciones de usuarios
-    public function transacciones (int $id ) {
-        $mensaje = '';
-            
-         /* $data = $this->ordenar($response); */
-
-         return $data = $this->usuariosService->getTransactions($id);
-
-         if(empty($data)){
-            $mensaje = 'El usuario aun no tiene transacciones';
-         }
-
+    public function transacciones (int $id, Request $request ) {
          
+         $data = $this->usuariosService->getTransactions($id);
+         $data = ($this->paginate($data, $request));
+         return view('usuarios.transacciones')->with(['data'=> $data]);             
     }
 
+    // método que consume API y encuentra un usuario específico con trasacciones
     public function findUser($id){
-         $data = $this->usuariosService->getUsuarioForId($id);
 
+        $data = $this->usuariosService->getTransactions($id);
+        $usuario = $this->usuariosService->getUsuarioForId($id);
+        Log::info('Se consume el API de un usuario especifico con sus transacciones');
+    
         return response()->json([
-            'data' => $data
+            'usuario' => $usuario,
+            'transactions' => $data
+            
         ]);
     }
 
-    public function paginate($items, $request, $perPage = 15, $page = null)
-    {
+
+    //metodo que se encarga de paginar y ordenar
+    public function paginate($items, $request, $perPage = 15, $page = null){
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-        $items = $items instanceof Collection ? $items : Collection::make($items);
+        $items = $items instanceof Collection ? $items : Collection::make($items)->sortBy('created_at', SORT_REGULAR, true);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, [
             'path'  => $request->url(),
             'query' =>$request->query()
         ]);
     }
-
    
-    // metodo que ordena por fecha de creación de forma descendente
-    public function ordenar($response){
-        
-        $data = json_decode($response, true);
-        $data = collect($data)->sortBy('created_at', SORT_REGULAR, true);
-        return $data;
-    }
 }

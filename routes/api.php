@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('listarUsuarios', [UserController::class, 'listar']);
 Route::get('transacciones/{id}',[UserController::class, 'transacciones']);
 
-Route::get('findUser/{id}', [UserController::class,],'findUser');
+Route::get('findUser/{id}', [UserController::class,'findUser']);

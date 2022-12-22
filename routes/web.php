@@ -19,3 +19,4 @@ Route::get('/', function () {
 });
 
 Route::get('listarUsuarios', [UserController::class, 'listar']);
+Route::get('transacciones/{id}',[UserController::class, 'transacciones']);
